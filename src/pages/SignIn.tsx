@@ -1,14 +1,28 @@
-import { auth,db } from "../config";
-import { GoogleAuthProvider, signInWithPopup } from "firebase/auth";
+
+import { auth, db } from '../config';
+import { GoogleAuthProvider, signInWithPopup } from 'firebase/auth';
+import { doc, setDoc, serverTimestamp } from 'firebase/firestore';
 
 const SignIn = () => {
-
-
-
-  
-  const googleSignIn = () => {
+  const googleSignIn = async () => {
     const provider = new GoogleAuthProvider();
-    signInWithPopup(auth, provider);
+    try {
+      const result = await signInWithPopup(auth, provider);
+      const user = result.user;
+      
+      console.log('User Email:', user.email);
+      //it store the user data wit the setdoc function
+      await setDoc(doc(db, 'users', user.uid), {
+        uid: user.uid,
+        displayName: user.displayName,
+        photoURL: user.photoURL,
+        isOnline: true,
+        lastActive: serverTimestamp(),
+      }, { merge: true });
+
+    } catch (err) {
+      console.error(err);
+    }
   };
 
   return (

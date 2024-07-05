@@ -2,6 +2,7 @@
 import { auth } from "../config";
 
 
+
 const Navbar = () => {
 
     const signOut = () => {
