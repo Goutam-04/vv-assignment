@@ -3,7 +3,7 @@
 const Message = () => {
 
   return (
-    <div className="flex items-start gap-2.5">
+    <div className="flex items-start gap-2.5 m-3">
     <img className="w-8 h-8 rounded-full" src="/docs/images/people/profile-picture-3.jpg" alt="Jese image"/>
     <div className="flex flex-col w-full max-w-[320px] leading-1.5">
         <div className="flex items-center space-x-2 rtl:space-x-reverse">

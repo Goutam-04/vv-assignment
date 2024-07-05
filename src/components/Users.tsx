@@ -1,3 +1,4 @@
+// src/components/Users.js
 import React, { useState, useEffect } from 'react';
 import { collection, getDocs } from 'firebase/firestore';
 import { auth, db } from '../config';
@@ -8,7 +9,7 @@ interface UserData {
   uid: string;
   displayName: string;
   photoURL: string;
-  isOnline: boolean;
+  isOnline: any;
 }
 
 const Users: React.FC = () => {
