@@ -1,26 +1,43 @@
-const SendMessage = () => {
+import React, { useState } from "react";
+import { auth, db } from "../config";
+import { addDoc, collection, serverTimestamp } from "firebase/firestore";
 
-function send(){
-    console.log("hello");
-}
+const SendMessage = ({ scroll }) => {
+  const [message, setMessage] = useState("");
 
+  const sendMessage = async (event) => {
+    event.preventDefault();
+    if (message.trim() === "") {
+      alert("Enter valid message");
+      return;
+    }
+    const { uid, displayName, photoURL } = auth.currentUser;
+    await addDoc(collection(db, "messages"), {
+      text: message,
+      name: displayName,
+      avatar: photoURL,
+      createdAt: serverTimestamp(),
+      uid,
+    });
+    setMessage("");
+    scroll.current.scrollIntoView({ behavior: "smooth" });
+  };
   return (
-    <form onSubmit={send} className="flex fixed bottom-0 w-[66%]  p-1 bg-blue-800">
-    <label htmlFor="messageInput" hidden>
-      Enter Message
-    </label>
-    <input
-      id="messageInput"
-      name="messageInput"
-      type="text"
-      className="flex-grow h-10 p-2 rounded-l bg-white text-blue-900 text-lg"
-      placeholder="type message..."
-     
-    />
-    <button type="submit" className="w-16 h-10 p-2 rounded-r bg-blue-400 text-white font-semibold">
-      Send
-    </button>
-  </form>
+    <form onSubmit={(event) => sendMessage(event)} className="send-message">
+      <label htmlFor="messageInput" hidden>
+        Enter Message
+      </label>
+      <input
+        id="messageInput"
+        name="messageInput"
+        type="text"
+        className="form-input__input"
+        placeholder="type message..."
+        value={message}
+        onChange={(e) => setMessage(e.target.value)}
+      />
+      <button type="submit">Send</button>
+    </form>
   );
 };
 

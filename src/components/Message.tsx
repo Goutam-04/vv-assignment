@@ -1,19 +1,60 @@
+import React, { useEffect, useState } from "react";
+import { useAuthState } from "react-firebase-hooks/auth";
+import { auth, db } from "../config";
+import {
+  collection,
+  doc,
+  onSnapshot,
+  query,
+  setDoc,
+  serverTimestamp,
+} from "firebase/firestore";
 
+const Message = ({ message }) => {
+  const [user] = useAuthState(auth);
+  const [status, setStatus] = useState({
+    sent: false,
+    delivered: true,
+    read: true,
+  });
 
-const Message = () => {
+  useEffect(() => {
+    const messageRef = doc(db, "messages", message.id);
+    const unsubscribe = onSnapshot(messageRef, (doc) => {
+      const data = doc.data();
+      if (data) {
+        setStatus({
+          sent: data.status?.sent || false,
+          delivered: data.status?.delivered || false,
+          read: data.status?.read || true,
+        });
+      }
+    });
+
+    return () => unsubscribe();
+  }, [message.id]);
 
   return (
-    <div className="flex items-start gap-2.5 m-3">
-    <img className="w-8 h-8 rounded-full" src="/docs/images/people/profile-picture-3.jpg" alt="Jese image"/>
-    <div className="flex flex-col w-full max-w-[320px] leading-1.5">
-        <div className="flex items-center space-x-2 rtl:space-x-reverse">
-            <span className="text-sm font-semibold text-gray-900 dark:text-white">Bonnie Green</span>
-            <span className="text-sm font-normal text-gray-500 dark:text-gray-400">11:46</span>
+    <div className={`chat-bubble ${message.uid === user.uid ? "right" : ""}`}>
+      <img
+        className="chat-bubble__left"
+        src={message.avatar}
+        alt="user avatar"
+      />
+      <div className="chat-bubble__right">
+        <p className="user-name">{message.name}</p>
+        <p className="user-message">{message.text}</p>
+        <div className="message-status">
+          {status.read ? (
+            <span  className="text-blue-600">✓✓</span>
+          ) : status.delivered ? (
+            <span className="" >✓✓</span>
+          ) : (
+            <span >✓</span>
+          )}
         </div>
-        <p className="text-sm font-normal py-2 text-gray-900 dark:text-white"> That's awesome. I think our users will really appreciate the improvements.</p>
-        <span className="text-sm font-normal text-gray-500 dark:text-gray-400">Delivered</span>
+      </div>
     </div>
-</div>
   );
 };
 
