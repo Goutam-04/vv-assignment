@@ -29,12 +29,13 @@ const SignIn = () => {
 
 
 
-
+// @ts-ignore
     <div className="h-screen w-screen bg-gray-400">
 
-
+      {/* @ts-ignore */}
       <div
         className="fixed grid place-items-center backdrop-blur-sm top-0 right-0 left-0 z-50 w-full inset-0 h-modal h-full justify-center items-center">
+          {/* @ts-ignore */}
         <div className="relative container m-auto px-6">
           <div className="m-auto md:w-7/12">
             <div className="rounded-xl bg-white dark:bg-gray-800 shadow-xl">

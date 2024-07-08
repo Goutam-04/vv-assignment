@@ -11,6 +11,7 @@ const SendMessage = ({ scroll }) => {
       alert("Enter valid message");
       return;
     }
+    // @ts-ignore
     const { uid, displayName, photoURL } = auth.currentUser;
     await addDoc(collection(db, "messages"), {
       text: message,

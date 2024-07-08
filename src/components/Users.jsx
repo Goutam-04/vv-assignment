@@ -1,25 +1,20 @@
 // src/components/Users.js
 import React, { useState, useEffect } from 'react';
 import { collection, getDocs } from 'firebase/firestore';
-import { auth, db } from '../config';
+import {  db } from '../config';
 import Navbar from './Navbar';
 import User from './User';
 
-interface UserData {
-  uid: string;
-  displayName: string;
-  photoURL: string;
-  isOnline: any;
-}
 
-const Users: React.FC = () => {
-  const [users, setUsers] = useState<UserData[]>([]);
+
+const Users = () => {
+  const [users, setUsers] = useState([]);
 
   useEffect(() => {
     const fetchUsers = async () => {
       try {
         const querySnapshot = await getDocs(collection(db, 'users'));
-        const usersList: UserData[] = [];
+        const usersList = [];
         querySnapshot.forEach((doc) => {
           const data = doc.data();
           usersList.push({

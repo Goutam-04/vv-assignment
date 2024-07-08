@@ -2,12 +2,10 @@ import React, { useEffect, useState } from "react";
 import { useAuthState } from "react-firebase-hooks/auth";
 import { auth, db } from "../config";
 import {
-  collection,
+
   doc,
   onSnapshot,
-  query,
-  setDoc,
-  serverTimestamp,
+
 } from "firebase/firestore";
 
 const Message = ({ message }) => {
@@ -35,6 +33,7 @@ const Message = ({ message }) => {
   }, [message.id]);
 
   return (
+    // @ts-ignore
     <div className={`chat-bubble ${message.uid === user.uid ? "right" : ""}`}>
       <img
         className="chat-bubble__left"
